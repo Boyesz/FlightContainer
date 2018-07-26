@@ -1,19 +1,19 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class JsonSerializer : MonoBehaviour {
 
     [SerializeField]
-    GameObject object1;
-    GameObject object2;
+    List<GameObject> objects;
 
     private bool isSaving = false;
     private string fileName = "Coords";
-    private Cordinates serializer;
+    private Coordinates serializer;
 
     // Use this for initialization
     void Start () {
-        serializer = new Cordinates();
+        serializer = new Coordinates();
 
         //We create file if it does not exists.
         if (File.Exists("Assets/Resources/" + fileName + ".json"))
@@ -42,15 +42,30 @@ public class JsonSerializer : MonoBehaviour {
             else
             isSaving = false;  
 	}
-
     void LateUpdate()
     {
         if(isSaving == true)
         {
-            serializer.x = object1.transform.position.x;
-            serializer.y = object1.transform.position.y;
-            serializer.z = object1.transform.position.z;
-            string writeOut = JsonUtility.ToJson(serializer);
+            Debug.Log("Serialize coorinates");
+            foreach (GameObject item in objects)
+            {
+                serializer.name = item.transform.name;
+                serializer.x = item.transform.position.x;
+                serializer.y = item.transform.position.y;
+                serializer.z = item.transform.position.z;
+                string writeOut = JsonUtility.ToJson(serializer);
+#if UNITY_EDITOR
+                StreamWriter writerEditor = new StreamWriter("Assets/Resources/" + fileName + ".json", append: true);
+                writerEditor.WriteLine(writeOut);
+                writerEditor.Close();
+#endif
+#if UNITY_STANDALONE
+                StreamWriter writerStandalone = new StreamWriter(fileName + ".json", append: true);
+                writerStandalone.WriteLine(writeOut);
+                writerStandalone.Close();
+#endif
+            }
+
 
         }
     }
