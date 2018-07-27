@@ -7,5 +7,9 @@ public class Coordinates
     public double x;
     public double y;
     public double z;
+    public double rotX;
+    public double rotY;
+    public double rotZ;
+    public double rotW;
 }
 

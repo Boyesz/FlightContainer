@@ -53,6 +53,10 @@ public class JsonSerializer : MonoBehaviour {
                 serializer.x = item.transform.position.x;
                 serializer.y = item.transform.position.y;
                 serializer.z = item.transform.position.z;
+                serializer.rotX = item.transform.rotation.x;
+                serializer.rotY = item.transform.rotation.y;
+                serializer.rotZ = item.transform.rotation.z;
+                serializer.rotW = item.transform.rotation.w;
                 string writeOut = JsonUtility.ToJson(serializer);
 #if UNITY_EDITOR
                 StreamWriter writerEditor = new StreamWriter("Assets/Resources/" + fileName + ".json", append: true);
