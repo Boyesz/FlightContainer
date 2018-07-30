@@ -46,29 +46,56 @@ public class JsonSerializer : MonoBehaviour {
     {
         if(isSaving == true)
         {
+            string writeOut = null;
             Debug.Log("Serialize coorinates");
-            foreach (GameObject item in objects)
+            for(int i = 1; i <= objects.Count; i++)
             {
-                serializer.name = item.transform.name;
-                serializer.x = item.transform.position.x;
-                serializer.y = item.transform.position.y;
-                serializer.z = item.transform.position.z;
-                serializer.rotX = item.transform.rotation.x;
-                serializer.rotY = item.transform.rotation.y;
-                serializer.rotZ = item.transform.rotation.z;
-                serializer.rotW = item.transform.rotation.w;
-                string writeOut = JsonUtility.ToJson(serializer);
+                if(i == 1)
+                {
+                    writeOut += "{ "
+                   + "x" + i + ":" + objects[i - 1].transform.position.x.ToString("0.0000000000")
+                   + ", y" + i + ":" + objects[i - 1].transform.position.y.ToString("0.0000000000")
+                   + ", z" + i + ":" + objects[i - 1].transform.position.z.ToString("0.0000000000")
+                   + ", rotX" + i + ":" + objects[i - 1].transform.rotation.x.ToString("0.0000000000")
+                   + ", rotY" + i + ":" + objects[i - 1].transform.rotation.y.ToString("0.0000000000")
+                   + ", rotZ" + i + ":" + objects[i - 1].transform.rotation.z.ToString("0.0000000000")
+                   + ", rotW" + i + ":" + objects[i - 1].transform.rotation.w.ToString("0.0000000000")
+                   + ", ";
+                    continue;
+                }
+                if (i == objects.Count)
+                {
+                    writeOut += 
+                  "x" + i + ":" + objects[i - 1].transform.position.x.ToString("0.0000000000")
+                  + ", y" + i + ":" + objects[i - 1].transform.position.y.ToString("0.0000000000")
+                  + ", z" + i + ":" + objects[i - 1].transform.position.z.ToString("0.0000000000")
+                  + ", rotX" + i + ":" + objects[i - 1].transform.rotation.x.ToString("0.0000000000")
+                  + ", rotY" + i + ":" + objects[i - 1].transform.rotation.y.ToString("0.0000000000")
+                  + ", rotZ" + i + ":" + objects[i - 1].transform.rotation.z.ToString("0.0000000000")
+                  + ", rotW" + i + ":" + objects[i - 1].transform.rotation.w.ToString("0.0000000000")
+                  + " }";
+                    continue;
+                }
+                writeOut +=
+                "x" + i + ":" + objects[i - 1].transform.position.x.ToString("0.0000000000")
+                + ", y" + i + ":" + objects[i - 1].transform.position.y.ToString("0.0000000000")
+                + ", z" + i + ":" + objects[i - 1].transform.position.z.ToString("0.0000000000")
+                + ", rotX" + i + ":" + objects[i - 1].transform.rotation.x.ToString("0.0000000000")
+                + ", rotY" + i + ":" + objects[i - 1].transform.rotation.y.ToString("0.0000000000")
+                + ", rotZ" + i + ":" + objects[i - 1].transform.rotation.z.ToString("0.0000000000")
+                + ", rotW" + i + ":" + objects[i - 1].transform.rotation.w.ToString("0.0000000000")
+                + ", ";
+            }
 #if UNITY_EDITOR
-                StreamWriter writerEditor = new StreamWriter("Assets/Resources/" + fileName + ".json", append: true);
-                writerEditor.WriteLine(writeOut);
-                writerEditor.Close();
+            StreamWriter writerEditor = new StreamWriter("Assets/Resources/" + fileName + ".json", append: true);
+            writerEditor.WriteLine(writeOut);
+            writerEditor.Close();
 #endif
 #if UNITY_STANDALONE
-                StreamWriter writerStandalone = new StreamWriter(fileName + ".json", append: true);
-                writerStandalone.WriteLine(writeOut);
-                writerStandalone.Close();
+            StreamWriter writerStandalone = new StreamWriter(fileName + ".json", append: true);
+            writerStandalone.WriteLine(writeOut);
+            writerStandalone.Close();
 #endif
-            }
 
 
         }
